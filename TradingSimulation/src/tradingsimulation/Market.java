@@ -59,9 +59,10 @@ this.currentTick = 0;
     * param tick, an int referencing the tick
     *
     *
+     * @param tick
     */
     public Date getDateFromTick(int tick) {
-
+    return new Date(0,0,0);
     }  
 
 }
