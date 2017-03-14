@@ -17,7 +17,9 @@ private int currentTick;
 private Date startDate;
 private Date endDate;
 
+public Market() {
 
+}
 
 
 }
