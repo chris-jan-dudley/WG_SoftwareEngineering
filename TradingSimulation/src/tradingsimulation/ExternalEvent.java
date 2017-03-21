@@ -15,7 +15,7 @@ abstract public class ExternalEvent {
     boolean isBuy;
     int fromTick, toTick;
     
-    
-    
-    
+    public ExternalEvent(){
+        
+    }
 }
