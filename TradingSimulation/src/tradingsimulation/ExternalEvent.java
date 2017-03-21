@@ -11,4 +11,11 @@ package tradingsimulation;
  */
 abstract public class ExternalEvent {
     
+    String nature, action;
+    boolean isBuy;
+    int fromTick, toTick;
+    
+    
+    
+    
 }
