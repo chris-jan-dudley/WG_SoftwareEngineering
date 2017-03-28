@@ -5,17 +5,19 @@
  */
 package tradingsimulation;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sjb56
  */
 abstract public class ExternalEvent {
-    
+
     String nature, action;
     boolean isBuy;
     int fromTick, toTick;
-    
-    public ExternalEvent(){
-        
+
+    public ExternalEvent(ArrayList<String> eventsFile) {
+
     }
 }
