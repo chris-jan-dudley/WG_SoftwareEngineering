@@ -6,6 +6,7 @@
 package tradingsimulation;
 
 import java.util.Date;
+import java.util.HashMap;
 
 /**
  *
@@ -24,16 +25,17 @@ this.name = name;
 
 abstract boolean constructFromCSV(String csvStockDataFN, String csvExternalEventsFN);
 abstract void tick();
+    /**
+     * sets the tick to 0, aka, akin to the start date
+     */
+    public void resetTick() {
+    this.currentTick = 0;
+    }
 
-public void resetTick() {
-this.currentTick = 0;
-}
 
 
 
-
-// getGraphDataOverTime(int fromTick, int toTick):
-//Hashmap<int tickIndex, Hashmap<String goodName, int itemValue>>
+    abstract HashMap<Integer, HashMap<String, Integer>> getGraphDataOverTime(int fromTick, int toTick);
 
     public String getName() {
         return name;
