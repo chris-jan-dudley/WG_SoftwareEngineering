@@ -5,11 +5,9 @@
  */
 package tradingsimulation;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.Arrays;
+import java.util.List;
 
 /**
  *
@@ -32,25 +30,12 @@ public class StockExchange extends Market {
     }
 
     public void parseExternalEventCSV(String fileName) throws FileNotFoundException {
-        String csvFile = "fileName";
-        String line = "";
-        String cvsSplitBy = ",";
+        // 1st, creates a CSV parser with the configs
+        //CsvParser parser = new CsvParser(new CsvParserSettings());
 
-        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
-
-            while ((line = br.readLine()) != null) {
-
-                // use comma as separator
-                String[] country = line.split(cvsSplitBy);
-
-                System.out.println(Arrays.toString(country));
-
-            }
-
-        } catch (IOException e) {
-        }
+        // 2nd, parses all rows from the CSV file into a 2-dimensional array
+        //List<String[]> resolvedData = parser.parseAll(new FileReader("/examples/example.csv"));
 
     }
-
 
 }

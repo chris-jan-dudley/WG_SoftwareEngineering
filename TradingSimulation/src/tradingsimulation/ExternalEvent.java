@@ -10,6 +10,8 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -20,7 +22,7 @@ abstract public class ExternalEvent {
     String nature, action;
     Date date, time;
     boolean isBuy;
-    int fromTick, toTick;
+    int fromTick, toTick, numDays;
 
     public ExternalEvent(ArrayList<String> eventsFile) {
         DateFormat df = new SimpleDateFormat("hh:mm");
@@ -33,6 +35,30 @@ abstract public class ExternalEvent {
         }
         nature = eventsFile.get(2);
         action = eventsFile.get(3);
-        isBuy = eventsFile.get(4).equals("buy");
+        isBuy = eventsFile.get(3).contains("buy");
+
+        Pattern pattern = Pattern.compile("\\s(\\d)\\s");
+        Matcher matcher = pattern.matcher(eventsFile.get(3));
+        if (matcher.find()) {
+            numDays = Integer.parseInt(matcher.group().replaceAll(" ", ""));
+        }
+
     }
+
+    public String getNature() {
+        return nature;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public int getFromTick() {
+        return fromTick;
+    }
+
+    public boolean getIsBuys() {
+        return isBuy;
+    }
+
 }
