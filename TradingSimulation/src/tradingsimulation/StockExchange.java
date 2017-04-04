@@ -5,7 +5,6 @@
  */
 package tradingsimulation;
 
-import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -14,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.List;
 
 /**
  *
@@ -100,9 +100,13 @@ private StockExchangeData mem;
                
     }
     
-    
     // note: kept public for individually testing CSV loading the events file only
     public boolean parseExternalEventCSV(String fileName) throws FileNotFoundException {
+        // 1st, creates a CSV parser with the configs
+        //CsvParser parser = new CsvParser(new CsvParserSettings());
+
+        // 2nd, parses all rows from the CSV file into a 2-dimensional array
+        //List<String[]> resolvedData = parser.parseAll(new FileReader("/examples/example.csv"));
         String csvFile = "fileName";
         String line = "";
         String cvsSplitBy = ",";
@@ -141,6 +145,5 @@ private StockExchangeData mem;
         
     }
     // to return: Hashmap<int tickIndex, Hashmap<String goodName, int itemValue>>
-
 
 }
