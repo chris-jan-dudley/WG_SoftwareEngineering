@@ -5,10 +5,16 @@
  */
 package tradingsimulation;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sjb56
  */
 public class CategoryExtEvt extends ExternalEvent {
+    
+    public CategoryExtEvt(ArrayList<String> eventsFile) {
+        super(eventsFile);
+    }
     
 }

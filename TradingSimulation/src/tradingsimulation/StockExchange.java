@@ -5,9 +5,11 @@
  */
 package tradingsimulation;
 
-import java.io.File;
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.util.Scanner;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  *
@@ -30,12 +32,25 @@ public class StockExchange extends Market {
     }
 
     public void parseExternalEventCSV(String fileName) throws FileNotFoundException {
-        try (Scanner scanner = new Scanner(new File(fileName))) {
-            scanner.useDelimiter(",");
-            while (scanner.hasNext()) {
-                System.out.print(scanner.next() + "|");
+        String csvFile = "fileName";
+        String line = "";
+        String cvsSplitBy = ",";
+
+        try (BufferedReader br = new BufferedReader(new FileReader(csvFile))) {
+
+            while ((line = br.readLine()) != null) {
+
+                // use comma as separator
+                String[] country = line.split(cvsSplitBy);
+
+                System.out.println(Arrays.toString(country));
+
             }
+
+        } catch (IOException e) {
         }
+
     }
+
 
 }
