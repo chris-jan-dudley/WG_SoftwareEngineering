@@ -11,4 +11,10 @@ package tradingsimulation;
  */
 public class FoodCompany extends Company {
     
+    public FoodCompany (int startingShares, int startingPrice) {
+        super (startingShares, startingPrice);
+        riskFactor = RiskLevels.Low;
+    }
+    
+    
 }
