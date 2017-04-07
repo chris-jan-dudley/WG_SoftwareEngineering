@@ -10,8 +10,8 @@ package tradingsimulation;
  * @author sjb56
  */
 public abstract class Company {
-    private int numberOfShares;
     private int sharePrice;
+    private int numberOfShares;    
     protected RiskLevels riskFactor;
     
     public enum RiskLevels {
@@ -23,24 +23,30 @@ public abstract class Company {
         sharePrice = startingPrice;
     }   
     
-    public void addShares (int amount) {
-        numberOfShares += amount;        
-    }
-    
-    public void subtractShares (int amount) {
-        numberOfShares -= amount;
-    }
-    
-    public int getNumberOfShares () {
-        return numberOfShares;
-    }
-    
-    public void changeSharePrice (int newPrice) {
-        sharePrice = newPrice;
+    public boolean setSharesPrice (int newPrice) {
+        if (newPrice >= 0) {
+            sharePrice = newPrice;
+            return true;
+        } else {
+           return false; 
+        }
     }
     
     public int getSharePrice () {
         return sharePrice;
+    }
+    
+    public boolean setNumbeOfShares (int newAmount) {
+        if (newAmount >= 0) {
+            numberOfShares = newAmount;
+            return true;
+        } else {
+           return false; 
+        }
+    }   
+     
+    public int getNumberOfShares () {
+        return numberOfShares;
     }
     
     public boolean setRiskFactor (int newRiskLevel) {
