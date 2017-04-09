@@ -5,9 +5,11 @@
  */
 package tradingsimulation;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -25,6 +27,10 @@ private int currentTick;
 private Date startDate;
 private Date endDate;
 private StockExchangeData mem;
+private ArrayList<ExternalEvent> externalEvents;
+private HashMap<Integer, ArrayList<ExternalEvent>> externalEventsIndexedToTicks;
+private ArrayList<Trader> traders;
+
     /**
      * Just like with Market/TradingExchange, this is provided for testing, not intended for production use
      * (You should always use constructors with init data rather then manually access methods to add CSV data)
@@ -87,7 +93,7 @@ private StockExchangeData mem;
        
        // update mem
        TickRow thisTickMemory = mem.addTickRow();
-       thisTickMemory.addCompanyPrices();
+       thisTickMemory.addCompanyPrices(new ArrayList<Company>());
        // put company prices in the memory
        thisTickMemory.addTraders();
        // put trader states (agressive, balanced, etc) in memory

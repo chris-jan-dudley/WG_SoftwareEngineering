@@ -5,17 +5,23 @@
  */
 package tradingsimulation;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sjb56
  */
-class TickRow {
-
-    void addCompanyPrices() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+public class TickRow {
+    ArrayList<Company> companyClonesAtTick;
+    public void addCompanyPrices(ArrayList<Company> c) {
+        this.companyClonesAtTick = c;
+    }
+    
+    public ArrayList<Company> getCompanyPrices() {
+        return this.companyClonesAtTick;
     }
 
-    void addOccuredTrades() {
+    public void addOccuredTrades() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
