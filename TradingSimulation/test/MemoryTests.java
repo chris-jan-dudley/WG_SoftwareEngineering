@@ -52,13 +52,18 @@ public class MemoryTests {
     
     @Test
     public void canAddRowAndGetData() {
+        String name;
         TickRow a = m.addTickRow();
         TickRow b = m.addTickRow();
-        ArrayList<Company> companyObjects;
-        companyObjects.add(new Company());
-        
+        ArrayList<Company> companyObjects = new ArrayList<>();
+        /*
+        -- To be updated when mergred
+        companyObjects.add(new Company(name));
         a.addCompanyPrices(companyObjects);
-        a.getCompanyPrices();
+        ArrayList<Company> e = a.getCompanyPrices();
+        Company f = e.get(0);
+        assertTrue(f.getName() == name)
+        */
         
     }
 }

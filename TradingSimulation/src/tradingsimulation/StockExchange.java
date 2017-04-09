@@ -27,6 +27,10 @@ private int currentTick;
 private Date startDate;
 private Date endDate;
 private StockExchangeData mem;
+private ArrayList<ExternalEvent> externalEvents;
+private HashMap<Integer, ArrayList<ExternalEvent>> externalEventsIndexedToTicks;
+private ArrayList<Trader> traders;
+
     /**
      * Just like with Market/TradingExchange, this is provided for testing, not intended for production use
      * (You should always use constructors with init data rather then manually access methods to add CSV data)
