@@ -5,14 +5,27 @@
  */
 package tradingsimulation;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author sjb56
  */
 class StockExchangeData {
-
+    ArrayList<TickRow> rows;
+    
     TickRow addTickRow() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        TickRow r = new TickRow();
+        rows.add(r);
+        return(r);
+    }
+    
+    TickRow getTickRow(int atTick) {
+        return rows.get(atTick);
+    }
+    
+    TickRow getLatestRow() {
+        return rows.get(rows.size()-1);
     }
     
 }
