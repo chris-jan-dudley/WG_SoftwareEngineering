@@ -9,6 +9,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -88,7 +89,7 @@ private StockExchangeData mem;
        
        // update mem
        TickRow thisTickMemory = mem.addTickRow();
-       thisTickMemory.addCompanyPrices();
+       thisTickMemory.addCompanyPrices(new ArrayList<Company>());
        // put company prices in the memory
        thisTickMemory.addTraders();
        // put trader states (agressive, balanced, etc) in memory

@@ -14,17 +14,17 @@ import java.util.ArrayList;
 public class StockExchangeData {
     ArrayList<TickRow> rows;
     
-    TickRow addTickRow() {
+    public TickRow addTickRow() {
         TickRow r = new TickRow();
         rows.add(r);
         return(r);
     }
     
-    TickRow getTickRow(int atTick) {
+    public TickRow getTickRow(int atTick) {
         return rows.get(atTick);
     }
     
-    TickRow getLatestRow() {
+    public TickRow getLatestRow() {
         return rows.get(rows.size()-1);
     }
     
