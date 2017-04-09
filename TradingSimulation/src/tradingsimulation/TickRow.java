@@ -9,9 +9,13 @@ package tradingsimulation;
  *
  * @author sjb56
  */
-class TickRow {
+public class TickRow {
 
     void addCompanyPrices() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    void getCompanyPrices() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

@@ -11,6 +11,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import tradingsimulation.StockExchangeData;
+import tradingsimulation.TickRow;
 
 /**
  *
@@ -19,6 +20,7 @@ import tradingsimulation.StockExchangeData;
 public class MemoryTests {
     StockExchangeData m;
     public MemoryTests() {
+        m = new StockExchangeData();
     }
     
     @BeforeClass
@@ -31,6 +33,7 @@ public class MemoryTests {
     
     @Before
     public void setUp() {
+         m = new StockExchangeData();
     }
     
     @After
@@ -40,6 +43,17 @@ public class MemoryTests {
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-    // @Test
-    // public void hello() {}
+    @Test
+    public void canAddRow() {
+       TickRow aTick = m.addTickRow();
+    }
+    
+    @Test
+    public void canAddRowAndGetData() {
+        TickRow a = m.addTickRow();
+        TickRow b = m.addTickRow();
+        a.addCompanyPrices(companyObjects);
+        a.getCompanyPrices();
+        
+    }
 }

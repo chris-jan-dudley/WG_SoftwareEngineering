@@ -11,7 +11,7 @@ import java.util.ArrayList;
  *
  * @author sjb56
  */
-class StockExchangeData {
+public class StockExchangeData {
     ArrayList<TickRow> rows;
     
     TickRow addTickRow() {
