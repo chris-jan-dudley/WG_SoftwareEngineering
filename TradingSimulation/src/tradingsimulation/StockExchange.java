@@ -24,12 +24,14 @@ import java.util.List;
 public class StockExchange extends Market {
 
 private int currentTick;
+private int endTick;
 private Date startDate;
 private Date endDate;
 private StockExchangeData mem;
 private ArrayList<ExternalEvent> externalEvents;
 private HashMap<Integer, ArrayList<ExternalEvent>> externalEventsIndexedToTicks;
 private ArrayList<Trader> traders;
+private View view; // 
 
     /**
      * Just like with Market/TradingExchange, this is provided for testing, not intended for production use
@@ -54,8 +56,14 @@ private ArrayList<Trader> traders;
             // throw error to GUI
              throw new UnsupportedOperationException("Attach method to tell user CSV was not able to loaded, through GUI.");
         }
+        // calculate end tick from start/end date.
+        this.calculateEndTick();
+        // external events should all be added, so now index them according to tick.
+        this.externalEventsIndexedToTicks = calculateEventsIndexs();
         // initialise memory
         this.mem = new StockExchangeData();
+        
+        this.view.readyGUI();
     }
     
     /**
@@ -77,21 +85,41 @@ private ArrayList<Trader> traders;
 
     /**
      * The vital method to the class, this
-     * 1. calls the price change formulas,
+     * 1. calls the price change formulas, "slightlyVariatePrices();"
      * 2. calls .trade() on all traders to allow to place sell/buy offers,
      * 3. checks for occuring external events and incorporates that,
      * 4. runs the sell/buy offers and
      *          4.1 sets the shares owned to the right places,
      *          4.2 sets the cash to the right values
-     * 5. adapts random traders to balanced/aggressive/seller based on probability(.possiblyUpdateMode());
+     * 5. adapts random traders to balanced/aggressive/seller based on probability(.recalculateStrategy());
+     * 6. store records of the current object sets, share prices, clients, etc, in the memory.
+     * 7. notify the GUI that the execution has occured so it can update on the screen
      * 
      */
     @Override
     void tick() {
        this.currentTick = this.currentTick+1;
+       // 1 randomly variate prices before traders can request...
+       slightlyVariatePrices();
        
+       // 2 collate trader requests..
+       for (Trader t : traders) {
+           t.trade(); // obviously random trader does this based on probability, intelligent trader has access to this object to make it's decisions.
+       }
        
-       // update mem
+       // 3 apply events
+       ArrayList<ExternalEvent> eventsThisTick = this.externalEventsIndexedToTicks.get(this.currentTick);
+       applyExternalEvents(eventsThisTick);
+       
+       // 4 Execute current offers, update objects.
+       // Requires other implementation first.
+       
+       // 5. Recalcate strategy (ie. random trader changes agressive to balanced, etc, etc.)
+       for (Trader t : traders) {
+           t.recalculateStrategy(); // obviously random trader does this based on probability, intelligent trader has access to this object to make it's decisions.
+       }
+       
+       // 6. update mem
        TickRow thisTickMemory = mem.addTickRow();
        thisTickMemory.addCompanyPrices(new ArrayList<Company>());
        // put company prices in the memory
@@ -103,6 +131,9 @@ private ArrayList<Trader> traders;
        // put the events that began and ended as a Strings under Events
        thisTickMemory.commitRow();
        // lock the row for editing
+       
+       //7 notify GUI
+       view.update();
                
     }
     
@@ -151,5 +182,60 @@ private ArrayList<Trader> traders;
         
     }
     // to return: Hashmap<int tickIndex, Hashmap<String goodName, int itemValue>>
+    
+    
+    private void addExternalEvent(ExternalEvent e) {
+        this.externalEvents.add(e);
+    }
+    
+    private HashMap<Integer, ArrayList<ExternalEvent>>  calculateEventsIndexs() {
+        // for each tick the simulation runs
+        HashMap<Integer, ArrayList<ExternalEvent>> evIndex = new HashMap<Integer, ArrayList<ExternalEvent>>();
+        for (int i = 0; i < this.endTick; i++) {
+            ArrayList<ExternalEvent> val = evIndex.get(i);
+            // check active external events at that tick and put it in that ticks hashmap
+            for (ExternalEvent event : externalEvents) {
+                int fromTick = event.getFromTick();
+                int toTick = event.getToTick();
+                if (i >= fromTick && i <= toTick) {
+                    val.add(event);
+                    // it is within the period, so append it to the hashmap for this, ith, tick.
+                }
+            }
+            evIndex.put(i, val);
+        }
+        return evIndex;
+    }
+    
+    private void calculateEndTick() {
+        this.endTick = 100;
+    }
+    
+    private void slightlyVariatePrices() {
+        // awaiting others to commit so can access price and modify it, psuedo code below:
+        /*
+        for (Company c : companies) {
+        c.setSharePrice(min(1, c.getSharePrice*(rand(0.98 to 1.02));
+        }
+        */
+    }
+    
+    private void applyExternalEvents(ArrayList<ExternalEvent> EVs) {
+        for (ExternalEvent event : EVs) {
+            if (event.getClass() == "AnyExtEvt") {
+                // iterate through companies .. randomly adding buy/sell orders of various companies..
+            }
+            else if (event.getClass() == "CategoryExtEvent") {
+                /* iterate only through companies of that category
+                eventsCategory = event.getCategory
+                        .. if company.getCategory = eventsCategory 
+                                .. add to some orders..
+            */
+            }
+            else if (event.getClass() == "CompanyExtEvent") {
+                // randomly add buy/sell orders to this company..
+            }
+        }
+    }
 
 }
