@@ -100,6 +100,7 @@ private ArrayList<TradeHappening> thisTickTrades;
      */
     @Override
     void tick() {
+       this.thisTickTrades = null;
        this.currentTick = this.currentTick+1;
        // 1 randomly variate prices before traders can request...
        slightlyVariatePrices();
@@ -115,6 +116,7 @@ private ArrayList<TradeHappening> thisTickTrades;
        
        // 4 Execute current offers, update objects.
        // Requires other implementation first.
+       executeTrades();
        
        // 5. Recalcate strategy (ie. random trader changes agressive to balanced, etc, etc.)
        for (Trader t : traders) {
@@ -250,6 +252,24 @@ private ArrayList<TradeHappening> thisTickTrades;
             }
             else if (event.getClass() == "CompanyExtEvent") {
                 // randomly add buy/sell orders to this company..
+            }
+        }
+    }
+    
+    private void executeTrades() {
+        ArrayList<TradeHappening> trades = this.thisTickTrades;
+        
+        // Collect and store supply and demand for each Company
+        ArrayList<CompanyTradeInfo> tInfo= new ArrayList<CompanyTradeInfo>();
+        for (Company c : companies) {
+            tInfo.add(new CompanyTradeInfo(c));
+        }
+        
+        for (Trader t : traders) {
+            ArrayList<Pair<Company, int>> wantToBuy = t.getWantToBuy();
+            for (Pair<Company, int> requestedPurchase : wantToBuy) {
+                // add to relevant CompanyTradeInfo
+                
             }
         }
     }
