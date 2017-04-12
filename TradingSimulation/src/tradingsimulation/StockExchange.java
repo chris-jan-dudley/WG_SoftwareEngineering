@@ -31,7 +31,9 @@ private StockExchangeData mem;
 private ArrayList<ExternalEvent> externalEvents;
 private HashMap<Integer, ArrayList<ExternalEvent>> externalEventsIndexedToTicks;
 private ArrayList<Trader> traders;
+private ArrayList<Company> companies;
 private View view; // 
+private ArrayList<TradeHappening> thisTickTrades;
 
     /**
      * Just like with Market/TradingExchange, this is provided for testing, not intended for production use
@@ -120,12 +122,26 @@ private View view; //
        }
        
        // 6. update mem
+       
+       ArrayList<Company> clonedCompanies = new ArrayList<Company>();
+       for (Company c : companies) {
+           clonedCompanies.add(c.clone());
+       }
+       
+       ArrayList<Trader> clonedTraders = new ArrayList<Trader>();
+       for (Trader t : traders) {
+           clonedTraders.add(t.clone());
+       }
+       
        TickRow thisTickMemory = mem.addTickRow();
-       thisTickMemory.addCompanyPrices(new ArrayList<Company>());
+       
+      
+       
+       thisTickMemory.addCompanyPrices(clonedCompanies);
        // put company prices in the memory
-       thisTickMemory.addTraders();
+       thisTickMemory.addTraders(clonedTraders);
        // put trader states (agressive, balanced, etc) in memory
-       thisTickMemory.addOccuredTrades();
+       thisTickMemory.addOccuredTrades(this.thisTickTrades);
        // put the trades that occured this tick to last..
        thisTickMemory.addEventChanges();
        // put the events that began and ended as a Strings under Events
