@@ -23,7 +23,7 @@ public abstract class Company {
         sharePrice = startingPrice;
     }   
     
-    public boolean setSharesPrice (int newPrice) {
+    public boolean setSharePrice (int newPrice) {
         if (newPrice >= 0) {
             sharePrice = newPrice;
             return true;
