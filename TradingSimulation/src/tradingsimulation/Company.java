@@ -36,7 +36,7 @@ public abstract class Company {
         return sharePrice;
     }
     
-    public boolean setNumbeOfShares (int newAmount) {
+    public boolean setNumberOfShares (int newAmount) {
         if (newAmount >= 0) {
             numberOfShares = newAmount;
             return true;
