@@ -10,8 +10,9 @@ package tradingsimulation;
  * @author sjb56
  */
 public abstract class Company {
+    private int numberOfShares;  
     private int sharePrice;
-    private int numberOfShares;    
+    
     protected RiskLevels riskFactor;
     
     public enum RiskLevels {
@@ -49,24 +50,15 @@ public abstract class Company {
         return numberOfShares;
     }
     
-    public boolean setRiskFactor (int newRiskLevel) {
-        switch (newRiskLevel) {
-            case 0:
-                riskFactor = RiskLevels.Low;
-                break;
-            case 1:
-                riskFactor = RiskLevels.Medium;
-                break;
-            case 2:
-                riskFactor = RiskLevels.High;
-                break;
-            default:
-                return false;
-
-        }
-        
-        return true;
-        
-    }   
+    public void setRisk (RiskLevels risk) {
+        riskFactor = risk;
+    }  
+    
+    public RiskLevels getRiskFactor () {
+        return riskFactor;
+    }
+    
+    @Override
+    protected abstract Company clone ();
     
 }
