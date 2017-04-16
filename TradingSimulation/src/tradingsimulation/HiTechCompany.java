@@ -15,5 +15,11 @@ public class HiTechCompany extends Company {
         super (startingShares, startingPrice);
         riskFactor = RiskLevels.Low;
     }
-        
+         
+    @Override
+    public Company clone() {
+        HiTechCompany comp = new HiTechCompany(super.getNumberOfShares(), super.getSharePrice()); 
+        comp.setRisk(getRiskFactor());
+        return comp;
+    }
 }
