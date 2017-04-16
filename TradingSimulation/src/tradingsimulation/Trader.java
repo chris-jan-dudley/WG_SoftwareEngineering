@@ -9,6 +9,9 @@ package tradingsimulation;
  *
  * @author sjb56
  */
- abstract public class Trader {
+
+public abstract class Trader {
+    
+    
     
 }
