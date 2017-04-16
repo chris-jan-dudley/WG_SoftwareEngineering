@@ -9,14 +9,9 @@ package tradingsimulation;
  *
  * @author sjb56
  */
-import java.util.ArrayList;
 
 public abstract class Trader {
-    private ArrayList<Client> clients = new ArrayList<>();
     
-    abstract void buy (Portfolio portfolio, Company company, int amount);
-    
-    abstract void sell (Portfolio portfolio, Company company, int amount);
     
     
 }
