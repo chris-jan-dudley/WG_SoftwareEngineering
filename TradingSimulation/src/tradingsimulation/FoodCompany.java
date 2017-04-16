@@ -16,5 +16,12 @@ public class FoodCompany extends Company {
         riskFactor = RiskLevels.Low;
     }
     
+    @Override
+    public Company clone() {
+        FoodCompany comp = new FoodCompany(super.getNumberOfShares(), super.getSharePrice()); 
+        comp.setRisk(getRiskFactor());
+        return comp;
+    }
+    
     
 }
