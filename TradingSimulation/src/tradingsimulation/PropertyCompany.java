@@ -15,5 +15,12 @@ public class PropertyCompany extends Company {
         super (startingShares, startingPrice);
         riskFactor = RiskLevels.Low;
     }
-        
+    
+    @Override
+    public Company clone() {
+        PropertyCompany comp = new PropertyCompany(super.getNumberOfShares(), super.getSharePrice()); 
+        comp.setRisk(getRiskFactor());
+        return comp;
+    }
+          
 }
