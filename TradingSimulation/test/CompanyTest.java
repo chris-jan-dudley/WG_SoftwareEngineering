@@ -55,4 +55,19 @@ public class CompanyTest {
         
     }
     
+    @Test
+    public void RiskTest() {
+        assertEquals(true, foodComp.getRiskFactor().equals(Company.RiskLevels.Low));
+        foodComp.setRisk(Company.RiskLevels.High);
+        assertEquals(true, foodComp.getRiskFactor().equals(Company.RiskLevels.High));       
+    }
+    
+    @Test
+    public void CloneCompanyTest() {
+        FoodCompany foodCompClone = (FoodCompany) foodComp.clone();
+        assertEquals(true, foodComp.getSharePrice() == foodCompClone.getSharePrice());
+        assertEquals(true, foodComp.getRiskFactor() == foodCompClone.getRiskFactor());
+        assertEquals(false, foodComp == foodCompClone);
+    }
+    
 }
