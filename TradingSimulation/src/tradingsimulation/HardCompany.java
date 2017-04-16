@@ -15,5 +15,12 @@ public class HardCompany extends Company {
         super (startingShares, startingPrice);
         riskFactor = RiskLevels.Low;
     }
+        
+    @Override
+    public Company clone() {
+        HardCompany comp = new HardCompany(super.getNumberOfShares(), super.getSharePrice()); 
+        comp.setRisk(getRiskFactor());
+        return comp;
+    }
     
 }
