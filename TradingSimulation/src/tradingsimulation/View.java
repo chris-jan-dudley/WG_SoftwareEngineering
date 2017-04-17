@@ -9,14 +9,13 @@ package tradingsimulation;
  *
  * @author sjb56
  */
+class View {
 
- public abstract public class Trader {
-
-    void recalculateStrategy() {
+    void readyGUI() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    void trade() {
+    void update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
