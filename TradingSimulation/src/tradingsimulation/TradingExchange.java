@@ -40,7 +40,13 @@ public class TradingExchange {
      * @param (config-dependent) csvExternalEventsFileName - see above
      */
     public TradingExchange(int config, String csvStockDataFileName, String csvExternalEventsFileName) {
+        if (config == 1) {
         this.addMarket(new StockExchange("The Best Stock Exchange", csvStockDataFileName, csvExternalEventsFileName));
+        }
+        else {
+            throw new UnsupportedConfigurationValueError("Choose a valid configuration when using 3 arguments. 1, stockData.csv, externalevent.csv is the current"
+                    + "only accepted configuration.");
+        }
     }
     
     /**

@@ -13,7 +13,7 @@ class CompanyTradeInfo {
     private Company c;
     private int getWantToBuyTotal() {
         // loop through orders and return total as int ( count )
+        return 0;
     }
     // equiv. getWantToSellTotal(
-)
 }
