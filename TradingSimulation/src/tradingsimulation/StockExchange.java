@@ -9,6 +9,8 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -184,7 +186,14 @@ private ArrayList<TradeHappening> thisTickTrades;
     }
     // note: kept public for individually testing CSV loading for init data only.
     public void parseStockDataCSV(String csvStockDataFN) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        try {
+            String line32 = Files.readAllLines(Paths.get(csvStockDataFN)).get(32);
+            } catch (IOException e) {
+                throw new FileNotFoundException();
+           
+            }
+        }
     }
 
     /**
