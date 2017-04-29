@@ -1,34 +1,29 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package tradingsimulation;
 
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-/**
- *
- * @author James
- */
 public class EventViewer {    
+    ViewController controller;
+    
     ScrollPane scrollablePane;
     VBox eventStack;
     
-    public EventViewer () {        
+    public EventViewer (ViewController controller) {
+        this.controller = controller;
+        
         eventStack = new VBox(6);
         scrollablePane = new ScrollPane(eventStack);
                 
         scrollablePane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollablePane.setMaxWidth(690);
-        scrollablePane.setPrefHeight(125);
-        scrollablePane.setPadding(new Insets(10, 5, 10, 10));
-        
+        scrollablePane.setMinWidth(680);
+        scrollablePane.setMaxWidth(680);        
+        scrollablePane.setMinHeight(150);
+        scrollablePane.setMaxHeight(150);
+        scrollablePane.setPadding(new Insets(10));        
     }   
     
     public Node getFxNode() {
@@ -39,7 +34,5 @@ public class EventViewer {
         eventStack.getChildren().add(
                 new Label(date + ": " + nature + ", " + action)
         );
-    }
-    
-    
+    }   
 }

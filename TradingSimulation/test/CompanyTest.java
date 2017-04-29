@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import tradingsimulation.Company;
 import tradingsimulation.FoodCompany;
 
 /**
@@ -24,7 +25,7 @@ public class CompanyTest {
     
     @Before
     public void setUp() {
-        foodComp = new FoodCompany(250, 50);        
+        foodComp = new FoodCompany("Food", 250, 50);        
     }
     
     @After
