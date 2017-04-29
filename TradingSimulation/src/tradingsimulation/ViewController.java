@@ -20,19 +20,21 @@ import javafx.stage.Stage;
 
 public class ViewController extends Application {
     
+    BorderPane root = new BorderPane();  
+    ChartViewer stocksChart = new ChartViewer();
+    EventViewer eventsLog = new EventViewer();
+    
     @Override
-    public void start(Stage primaryStage) {       
-        BorderPane root = new BorderPane();  
-        ChartViewer stocksChart = new ChartViewer();
-        EventViewer eventsLog = new EventViewer();
-        
+    public void start(Stage primaryStage) { 
         root.setTop(createMenuBar());
         root.setRight(createFilterTree());
         root.setLeft(stocksChart.getFxNode());
-        root.setBottom(eventsLog.getFxNode());        
+        root.setBottom(eventsLog.getFxNode()); 
+        
+        eventsLog.logEvent("test", "test", "test");
         
         Scene scene = new Scene(root, 880, 550);        
-        primaryStage.setTitle("Stock Market SImulation");
+        primaryStage.setTitle("Stock Market Simulation");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
@@ -41,8 +43,8 @@ public class ViewController extends Application {
         launch(args);
     }
     
-    public static void main (String[] args) {
-        createInterface(args);
+    public ChartViewer getChartViewer () {
+        return stocksChart;
     }
     
     private Node createMenuBar () {
@@ -80,12 +82,11 @@ public class ViewController extends Application {
         TreeItem<String> rootItem = new TreeItem<> ();
         rootItem.setExpanded(true);
         
-        TreeItem traders = new TreeItem<>("Traders");
-        TreeItem trader1 = new TreeItem<>("Random trader Joe");    
-        TreeItem trader2 = new TreeItem<>("Random trader Bob");  
-        TreeItem traderIntel = new TreeItem<>("Intelligent trader");  
-        traders.getChildren().addAll(trader1, trader2, traderIntel);
-        traders.setExpanded(true);
+        TreeItem clients = new TreeItem<>("Clients");
+        TreeItem clients1 = new TreeItem<>("Client Joe");    
+        TreeItem clients2 = new TreeItem<>("Client Bob");  
+        clients.getChildren().addAll(clients1, clients2);
+        clients.setExpanded(true);
         
         TreeItem stocks = new TreeItem<>("Stocks");
         TreeItem hard = new TreeItem<>("Hard commodities"); 
@@ -93,7 +94,7 @@ public class ViewController extends Application {
         stocks.getChildren().addAll(hard, food);
         stocks.setExpanded(true);
         
-        rootItem.getChildren().addAll(traders, stocks);
+        rootItem.getChildren().addAll(clients, stocks);
                 
         TreeView<String> tree = new TreeView<> (rootItem);
         tree.setShowRoot(false); 

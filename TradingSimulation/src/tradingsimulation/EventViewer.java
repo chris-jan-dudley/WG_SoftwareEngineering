@@ -9,6 +9,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -16,30 +17,29 @@ import javafx.scene.layout.VBox;
  * @author James
  */
 public class EventViewer {    
-    
-    VBox container = new VBox(6);
+    ScrollPane scrollablePane;
+    VBox eventStack;
     
     public EventViewer () {        
-        ScrollPane scrollableLog = new ScrollPane(container);
+        eventStack = new VBox(6);
+        scrollablePane = new ScrollPane(eventStack);
+                
+        scrollablePane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollablePane.setMaxWidth(690);
+        scrollablePane.setPrefHeight(125);
+        scrollablePane.setPadding(new Insets(10, 5, 10, 10));
         
-        
-        scrollableLog.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
-        scrollableLog.setMaxWidth(670);
-        scrollableLog.setPrefHeight(125);
-        scrollableLog.setPadding(new Insets(10, 5, 10, 10));        
     }   
     
     public Node getFxNode() {
-        return container;        
+        return scrollablePane;        
     }
     
     public void logEvent (String date, String nature, String action) {
-        container.getChildren().add(
+        eventStack.getChildren().add(
                 new Label(date + ": " + nature + ", " + action)
         );
     }
-    
-    
     
     
 }

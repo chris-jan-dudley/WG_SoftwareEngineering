@@ -10,6 +10,7 @@ package tradingsimulation;
  * @author sjb56
  */
 public abstract class Company {
+    private String name;
     private int numberOfShares;  
     private int sharePrice;
     
@@ -19,10 +20,14 @@ public abstract class Company {
         High, Medium, Low
     }
     
-    public Company (int startingShares, int startingPrice) {
+    public Company (String name, int startingShares, int startingPrice) {
         numberOfShares = startingShares;
         sharePrice = startingPrice;
     }   
+    
+    public String getName () {
+        return name;
+    }    
     
     public boolean setSharePrice (int newPrice) {
         if (newPrice >= 0) {

@@ -29,12 +29,14 @@ public class ChartViewer {
     LineChart<Number,Number> lineChart;
     
     NumberAxis dateAxis = new NumberAxis();
-    NumberAxis priceAxis = new NumberAxis();
+    NumberAxis netWorthAxis = new NumberAxis();
     
     DatePicker fromDatePicker = new DatePicker(LocalDate.of(2017, 1, 1));
     DatePicker toDatePicker = new DatePicker(LocalDate.of(2017, 12, 31));
     
-    ArrayList<CompanyChartEntry> companyEntries = new ArrayList<>();
+    ArrayList<ChartEntry> companyEntries = new ArrayList<>();
+    ArrayList<ChartEntry> clientEntries = new ArrayList<>();
+    ArrayList<ChartEntry> traderEntries = new ArrayList<>();
     
     public ChartViewer () {
         dateAxis.setLabel("Days Since Simulation Start"); 
@@ -45,13 +47,11 @@ public class ChartViewer {
         fromDatePicker.setOnAction(e -> updateDateAxis());    
         toDatePicker.setOnAction(e -> updateDateAxis());
         
-        priceAxis.setLabel("Share Price in Pence");
+        netWorthAxis.setLabel("Net Worth in Pence");
         
-        lineChart = new LineChart<>(dateAxis, priceAxis);                
+        lineChart = new LineChart<>(dateAxis, netWorthAxis);                
         lineChart.setTitle("Stock Monitoring");
-        
-              
-        
+         
         lineChart.setMaxHeight(360);
         lineChart.setPrefWidth(630);
         lineChart.setLegendVisible(false);
@@ -86,16 +86,30 @@ public class ChartViewer {
     public void AddCompanyToChart (Company company) {
         XYChart.Series companyData = new XYChart.Series();
         companyData.setName(company.getName());
-        companyData.getData().add(new XYChart.Data(company.getSharePrice(), 0));     
+        companyData.getData().add(new XYChart.Data(company.getNumberOfShares() * company.getSharePrice(), 0));     
         lineChart.getData().add(companyData);  
-        companyEntries.add(new CompanyChartEntry(company, companyData));
+        companyEntries.add(new ChartEntry(company, companyData));
     }
     
-    public void UpdateAllCompanySharePrice () {
-        for (CompanyChartEntry entry : companyEntries) {
-            //entry.getData().getData().add(new XYChart.Data(entry.getCompany().getSharePrice(), ChronoUnit.DAYS.between(fromDatePicker.getValue(), ));
+    public void AddClientToChart (Client client) {
+        XYChart.Series clientData = new XYChart.Series();
+        clientData.setName(client.getName());
+        clientData.getData().add(new XYChart.Data(client.getNetWorth(), 0));     
+        lineChart.getData().add(clientData);  
+        clientEntries.add(new ChartEntry(client, clientData));
+    }
+    
+    public void UpdateAllSeries () {
+        double days = StockExchange.getTick() / 28;
+        for (ChartEntry entry : companyEntries) {            
+            Company comp = (Company) entry.getObject();
+            entry.getSeries().getData().add(new XYChart.Data(comp.getNumberOfShares() * comp.getSharePrice(), days));            
         }
         
+        for (ChartEntry entry : clientEntries) {
+            Client client = (Client) entry.getObject();
+            entry.getSeries().getData().add(new XYChart.Data(client.getNetWorth(), days));            
+        }
         
     }
     

@@ -5,6 +5,8 @@
  */
 package tradingsimulation;
 
+import java.util.Timer;
+
 /**
  *
  * @author sjb56
@@ -15,7 +17,10 @@ public class TradingSimulation {
      * @param args the command line arguments,
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        //Timer timer = new Timer();
+        //timer.scheduleAtFixedRate(new GUITest(), 0, 5000);
+        ViewController.createInterface(args);
+        
     }
     
 }

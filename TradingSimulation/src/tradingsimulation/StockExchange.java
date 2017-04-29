@@ -23,13 +23,14 @@ import java.util.List;
  */
 public class StockExchange extends Market {
 
-private int currentTick;
+private static int currentTick;
 private Date startDate;
 private Date endDate;
 private StockExchangeData mem;
 private ArrayList<ExternalEvent> externalEvents;
 private HashMap<Integer, ArrayList<ExternalEvent>> externalEventsIndexedToTicks;
 private ArrayList<Trader> traders;
+
 
     /**
      * Just like with Market/TradingExchange, this is provided for testing, not intended for production use
@@ -88,22 +89,24 @@ private ArrayList<Trader> traders;
      */
     @Override
     void tick() {
-       this.currentTick = this.currentTick+1;
-       
-       
-       // update mem
-       TickRow thisTickMemory = mem.addTickRow();
-       thisTickMemory.addCompanyPrices(new ArrayList<Company>());
-       // put company prices in the memory
-       thisTickMemory.addTraders();
-       // put trader states (agressive, balanced, etc) in memory
-       thisTickMemory.addOccuredTrades();
-       // put the trades that occured this tick to last..
-       thisTickMemory.addEventChanges();
-       // put the events that began and ended as a Strings under Events
-       thisTickMemory.commitRow();
-       // lock the row for editing
-               
+        this.currentTick = this.currentTick+1;
+        
+        // update mem
+        TickRow thisTickMemory = mem.addTickRow();
+        thisTickMemory.addCompanyPrices(new ArrayList<Company>());
+        // put company prices in the memory
+        thisTickMemory.addTraders();
+        // put trader states (agressive, balanced, etc) in memory
+        thisTickMemory.addOccuredTrades();
+        // put the trades that occured this tick to last..
+        thisTickMemory.addEventChanges();
+        // put the events that began and ended as a Strings under Events
+        thisTickMemory.commitRow();
+        // lock the row for editing              
+    }
+    
+    public static int getTick() {
+        return currentTick;
     }
     
     // note: kept public for individually testing CSV loading the events file only
