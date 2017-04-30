@@ -24,7 +24,7 @@ public class RandomTrader extends Trader {
     }
 
     @Override
-    void tradeBuy() {
+    ArrayList<Request> tradeBuy() {
         //For each client, generate a request object which contains a reference
         // to the portfolio, and a list of shares it would like to buy
 
@@ -86,10 +86,12 @@ public class RandomTrader extends Trader {
             //adds the Request object to the buyRequests ArrayList
             buyRequests.add(buyReq);
         }
+        
+        return buyRequests;
     }
 
     @Override
-    void tradeSell() {
+    ArrayList<Request> tradeSell() {
         for (Client client: clients) {
             Request sellReq = new Request(client.get_Portfolio());
             HashMap < Company, Integer > wantSell = new HashMap < > ();
@@ -132,7 +134,8 @@ public class RandomTrader extends Trader {
             sellReq.setMap(wantSell);
             sellRequests.add(sellReq);
         }
-
+        
+        return sellRequests;
     }
 
     //This is used to calculate the value of a map in terms of the sum of all (share number * share price)
@@ -194,5 +197,4 @@ public class RandomTrader extends Trader {
                 }
         }
     }
-
 }

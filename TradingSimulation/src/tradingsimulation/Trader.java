@@ -48,8 +48,8 @@ public abstract class Trader {
         sellRequests = new ArrayList<>();
     }
 
-    abstract void tradeBuy();
-    abstract void tradeSell();
+    abstract ArrayList<Request> tradeBuy();
+    abstract ArrayList<Request> tradeSell();
     
     abstract void recalculateStrategy();
     
