@@ -23,7 +23,7 @@ import java.util.List;
  */
 public class StockExchange extends Market {
 
-private static int currentTick;
+private int currentTick;
 private Date startDate;
 private Date endDate;
 private StockExchangeData mem;
@@ -105,7 +105,7 @@ private ArrayList<Trader> traders;
         // lock the row for editing              
     }
     
-    public static int getTick() {
+    public int getTick() {
         return currentTick;
     }
     

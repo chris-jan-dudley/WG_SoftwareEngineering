@@ -11,7 +11,7 @@ package tradingsimulation;
  */
 public class HiTechCompany extends Company {
     
-    public HiTechCompany (String companyName, int startingShares, int startingPrice) {
+    public HiTechCompany (String companyName, int startingShares, double startingPrice) {
         super (companyName, startingShares, startingPrice);
         riskFactor = RiskLevels.Low;
     }

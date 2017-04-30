@@ -11,7 +11,7 @@ package tradingsimulation;
  */
 public class PropertyCompany extends Company {
     
-    public PropertyCompany (String companyName, int startingShares, int startingPrice) {
+    public PropertyCompany (String companyName, int startingShares, double startingPrice) {
         super (companyName, startingShares, startingPrice);
         riskFactor = RiskLevels.Low;
     }

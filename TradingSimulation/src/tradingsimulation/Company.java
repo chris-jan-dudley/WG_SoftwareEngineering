@@ -12,7 +12,7 @@ package tradingsimulation;
 public abstract class Company {
     private String name;
     private int numberOfShares;  
-    private int sharePrice;
+    private double sharePrice;
     
     protected RiskLevels riskFactor;
     
@@ -20,7 +20,8 @@ public abstract class Company {
         High, Medium, Low
     }
     
-    public Company (String name, int startingShares, int startingPrice) {
+    public Company (String name, int startingShares, double startingPrice) {
+        this.name = name;
         numberOfShares = startingShares;
         sharePrice = startingPrice;
     }   
@@ -29,16 +30,16 @@ public abstract class Company {
         return name;
     }    
     
-    public boolean setSharePrice (int newPrice) {
+    public boolean setSharePrice (double newPrice) {
         if (newPrice >= 0) {
             sharePrice = newPrice;
             return true;
         } else {
-           return false; 
+            return false; 
         }
     }
     
-    public int getSharePrice () {
+    public double getSharePrice () {
         return sharePrice;
     }
     

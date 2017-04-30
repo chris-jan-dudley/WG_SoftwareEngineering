@@ -3,21 +3,16 @@ package tradingsimulation;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
+import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 
 
 public class ChartViewer {
@@ -33,9 +28,9 @@ public class ChartViewer {
     private DatePicker viewToDate = new DatePicker(LocalDate.of(2018, 1, 1));
     
     private ArrayList<ChartEntry> companyEntries = new ArrayList<>();
-    private ArrayList<ChartEntry> clientEntries = new ArrayList<>();
+    private ChartEntry indexEntry;
     
-    public ChartViewer (ViewController controller) {
+    public ChartViewer (ViewController controller, ArrayList<Company> companies) {
         this.controller = controller;
         
         dateAxis.setLabel("Days Since Simulation Start"); 
@@ -43,23 +38,34 @@ public class ChartViewer {
         dateAxis.setTickUnit(50);
         
         updateDateBounds();
-        viewFromDate.setOnAction(e -> updateDateBounds());    
-        viewToDate.setOnAction(e -> updateDateBounds());
+        viewFromDate.setOnAction(e -> {
+            updateDateBounds();
+            if (viewFromDate.getValue().compareTo(viewToDate.getValue()) > 0) {
+                viewFromDate.setValue(viewToDate.getValue());
+            }
+        });    
         
-        netWorthAxis.setLabel("Net Worth in Pence");
+        viewToDate.setOnAction(e -> {
+            updateDateBounds();
+            if (viewToDate.getValue().compareTo(viewFromDate.getValue()) < 0) {
+                viewToDate.setValue(viewFromDate.getValue());
+            }
+        });
+        
+        netWorthAxis.setLabel("Share Price in Pence");
         
         lineChart = new LineChart<>(dateAxis, netWorthAxis);                
         lineChart.setTitle("Stock Monitoring");
          
         lineChart.setMaxHeight(360);
         lineChart.setPrefWidth(680);
-        lineChart.setLegendVisible(false);
+        lineChart.setLegendSide(Side.RIGHT);
         lineChart.setCreateSymbols(false);
         
         GenerateTestData();
                
         HBox chartParameters = new HBox(7);  
-        chartParameters.setPadding(new Insets(0, 0, 0, 8));
+        chartParameters.setPadding(new Insets(0, 0, 0, 70));
         chartParameters.getChildren().addAll(
                 new Label("View From: "),
                 viewFromDate,
@@ -70,42 +76,60 @@ public class ChartViewer {
         container.getChildren().addAll(lineChart, chartParameters);
     }    
     
-    private void updateDateBounds () {
-        dateAxis.setLowerBound((int) ChronoUnit.DAYS.between(controller.getSettings().getStartDate(), viewFromDate.getValue()));
-        dateAxis.setUpperBound((int) ChronoUnit.DAYS.between(controller.getSettings().getStartDate(), controller.getSettings().getEndDate()) - ChronoUnit.DAYS.between(viewToDate.getValue(), controller.getSettings().getEndDate()));
+    public void updateDateBounds () {
+        LocalDate startDate = controller.getSettings().getStartDate();
+        LocalDate endDate = controller.getSettings().getEndDate();
+        if (viewFromDate.getValue().compareTo(startDate) < 0) {
+            viewFromDate.setValue(startDate);
+        }
+        
+        if (viewToDate.getValue().compareTo(endDate) > 0) {
+            viewToDate.setValue(endDate);
+        }
+        
+        dateAxis.setLowerBound((int) ChronoUnit.DAYS.between(startDate, viewFromDate.getValue()));
+        dateAxis.setUpperBound((int) ChronoUnit.DAYS.between(startDate, endDate) - ChronoUnit.DAYS.between(viewToDate.getValue(), endDate));
     }
     
     public Node getFxNode () {
         return container;         
     }
         
-    public void AddCompanyToChart (Company company) {
-        XYChart.Series companyData = new XYChart.Series();
-        companyData.setName(company.getName());
-        companyData.getData().add(new XYChart.Data(0, company.getNumberOfShares() * company.getSharePrice()));     
-        lineChart.getData().add(companyData);  
-        companyEntries.add(new ChartEntry(company, companyData));
-    }
-    
-    public void AddClientToChart (Client client) {
-        XYChart.Series clientData = new XYChart.Series();
-        clientData.setName(client.getName());
-        clientData.getData().add(new XYChart.Data(0, client.getNetWorth()));     
-        lineChart.getData().add(clientData);  
-        clientEntries.add(new ChartEntry(client, clientData));
-    }
-    
-    public void UpdateAllSeries () {
-        double days = StockExchange.getTick() / 28;
-        for (ChartEntry entry : companyEntries) {            
-            Company comp = (Company) entry.getObject();
-            entry.getSeries().getData().add(new XYChart.Data(days, comp.getNumberOfShares() * comp.getSharePrice()));            
+    public void addCompaniesToChart (ArrayList<Company> companies) {
+        double sumSharePrice = 0;
+        for (Company companyObj : companies) {
+            XYChart.Series companyData = new XYChart.Series();
+            companyData.setName(companyObj.getName());
+            companyData.getData().add(new XYChart.Data(0, companyObj.getSharePrice()));     
+            lineChart.getData().add(companyData);  
+            companyEntries.add(new ChartEntry(companyObj, companyData));
+            sumSharePrice += companyObj.getSharePrice();
         }
         
-        for (ChartEntry entry : clientEntries) {
-            Client client = (Client) entry.getObject();
-            entry.getSeries().getData().add(new XYChart.Data(days, client.getNetWorth()));            
-        }
+        XYChart.Series indexData = new XYChart.Series();
+        indexData.setName("Index");
+        indexData.getData().add(new XYChart.Data(0, sumSharePrice / companies.size()));     
+        lineChart.getData().add(indexData);  
+        indexEntry = new ChartEntry(null, indexData);
+        
+    }
+    
+    int tick = 0; //TESTING
+    
+    public void updateAllSeries () {
+        double day = tick / 28;
+        double sumSharePrice = 0;
+        for (ChartEntry entry : companyEntries) {            
+            Company entryComp = (Company) entry.getObject();
+            //for (Company modelComp : controller.getExchange().getStockExchangeData().getLatestRow().getCompanyPrices) {
+            //    if (modelComp.getName().equals(entryComp.getName())) {
+            //        entry.getSeries().getData().add(new XYChart.Data(day, modelComp.getSharePrice()));
+            //        sumSharePrice += entryComp.getSharePrice(); 
+            //    }                           
+            //}
+                       
+        }          
+        indexEntry.getSeries().getData().add(new XYChart.Data(day, sumSharePrice / companyEntries.size()));
         
     }
     
@@ -113,28 +137,34 @@ public class ChartViewer {
         return companyEntries;
     }
     
-    public ArrayList<ChartEntry> getClientEntries () {
-        return clientEntries;
+    public ChartEntry getIndexEntry () {
+        return indexEntry;
     }
     
-    private void GenerateTestData () {
-        Company temp = new FoodCompany("Food Company", 100, 10);
-        XYChart.Series companyData = new XYChart.Series();
-        companyData.setName("Food Company");
-        companyData.getData().add(new XYChart.Data(0, temp.getNumberOfShares() * temp.getSharePrice()));     
-        companyData.getData().add(new XYChart.Data(180, 850));
-        companyData.getData().add(new XYChart.Data(364, 120));        
-        lineChart.getData().add(companyData);  
-        companyEntries.add(new ChartEntry(temp, companyData));
+    private void GenerateTestData () {  
+        ArrayList<Company> startingCompanies = new ArrayList<>();
         
-        Company temp1 = new HardCompany("Hard Company", 500, 10);
-        XYChart.Series companyData1 = new XYChart.Series();
-        companyData1.setName("Hard Company");
-        companyData1.getData().add(new XYChart.Data(0, temp1.getNumberOfShares() * temp1.getSharePrice()));     
-        companyData1.getData().add(new XYChart.Data(180, 300));
-        companyData1.getData().add(new XYChart.Data(364, 2000));        
-        lineChart.getData().add(companyData1);  
-        companyEntries.add(new ChartEntry(temp1, companyData1));        
+        Company c1 = new FoodCompany("Food Company", 250, 6);
+        Company c2 = new HardCompany("Hard Company", 500, 3);
+        Company c3 = new HiTechCompany("Tech Company", 150, 12);
+        
+        startingCompanies.add(c1);
+        startingCompanies.add(c2);
+        startingCompanies.add(c3);        
+        addCompaniesToChart(startingCompanies);   
+        
+        c1.setSharePrice(4);
+        c2.setSharePrice(15);
+        c3.setSharePrice(6.6);
+        tick = 50;
+        updateAllSeries();
+        
+        c1.setSharePrice(8);
+        c2.setSharePrice(5);
+        c3.setSharePrice(17);
+        tick = 100;
+        updateAllSeries();
+        
     }
     
     

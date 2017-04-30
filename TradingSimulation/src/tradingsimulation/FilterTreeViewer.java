@@ -17,26 +17,24 @@ public class FilterTreeViewer {
     ViewController controller;
     VBox container = new VBox(10);
     
+    TreeItem<String> rootItem = new TreeItem<> ();
+    TreeItem indexRoot = new TreeItem<>("Stock Index");
+    TreeItem companiesRoot = new TreeItem<>("Companies");
+
+    
     public FilterTreeViewer (ViewController controller) {
         this.controller = controller;
                 
         Label title = new Label ("Chart filters");
         
-        TreeItem<String> rootItem = new TreeItem<> ();
+        loadTree();
+        
+        TreeItem<String> index = new TreeItem<>("Index");
+        indexRoot.getChildren().add(index);        
+        indexRoot.setExpanded(true);
+        
         rootItem.setExpanded(true);
-        
-        TreeItem clients = new TreeItem<>("Clients");
-        TreeItem clients1 = new TreeItem<>("Client Example");    
-        clients.getChildren().addAll(clients1);
-        clients.setExpanded(true);
-        
-        TreeItem companies = new TreeItem<>("Companies");
-        TreeItem food = new TreeItem<>("Food Company");
-        TreeItem hard = new TreeItem<>("Hard Company");
-        companies.getChildren().addAll(food, hard);
-        companies.setExpanded(true);
-        
-        rootItem.getChildren().addAll(clients, companies);
+        rootItem.getChildren().addAll(indexRoot, companiesRoot);
                 
         TreeView<String> tree = new TreeView<> (rootItem);
         tree.setShowRoot(false); 
@@ -46,9 +44,18 @@ public class FilterTreeViewer {
         container.getChildren().addAll(title, tree);
         
         container.setMinHeight(400);
-        container.setMaxHeight(400);
         container.setMinWidth(210);
-        container.setMaxWidth(210);
+    }
+    
+    private void loadTree () {
+        TreeItem[] companies = new TreeItem[controller.getChart().getCompanyEntries().size()];
+        for (int i = 0; i < companies.length; i++) {
+            Company c = (Company) controller.getChart().getCompanyEntries().get(i).getObject();
+            companies[i] = new TreeItem<>(c.getName());
+        }        
+        
+        companiesRoot.getChildren().addAll((Object[]) companies);
+        companiesRoot.setExpanded(true);
     }
     
     public Node getFxNode () {
@@ -66,33 +73,39 @@ public class FilterTreeViewer {
                 setText(null);
             } else {       
                 currItem = this.getTreeItem();
-                if (currItem.isLeaf()) {
-                    HBox cellBox = new HBox(10);
+                if (currItem.isLeaf() && !item.equals("Companies") && !item.equals("Clients")) {       
+                    HBox cellBox = new HBox(1);
+                    
                     CheckBox checkBox = new CheckBox();
-                    checkBox.setSelected(true);
-                    checkBox.selectedProperty().addListener(new ChangeListener<Boolean>() {
-                        @Override
-                        public void changed(ObservableValue<? extends Boolean> observable, Boolean oldValue, Boolean newValue) {
+                    checkBox.setSelected(true);                                      
+                    checkBox.selectedProperty().addListener((ov, oldValue, newValue) -> {
                             String catagory = (String) currItem.getParent().getValue();
+                            ChartViewer chart = controller.getChart();
                             switch (catagory) {
-                                case "Companies":
-                                    ChartViewer chart = controller.getChart();
+                                case "Companies":                                  
                                     for (ChartEntry entry : chart.getCompanyEntries()) {
                                         if (entry.getSeries().getName().equals(item)) {
                                             if (newValue) {                                                
-                                                entry.getSeries().getNode().setStyle("-fx-stroke-width: 3;");  
+                                                entry.getSeries().getNode().setStyle("-fx-stroke-width: 3;"); 
                                             } else {
                                                 entry.getSeries().getNode().setStyle("-fx-stroke-width: 0;");  
                                             }
-                                        }
+                                        }                                       
                                     }                                    
                                     break;
-                                case "Clients":
+                                case "Stock Index":                                    
+                                    if (controller.getChart().getIndexEntry().getSeries().getName().equals(item)) {
+                                        if (newValue) {                                                
+                                            controller.getChart().getIndexEntry().getSeries().getNode().setStyle("-fx-stroke-width: 3;"); 
+                                        } else {
+                                            controller.getChart().getIndexEntry().getSeries().getNode().setStyle("-fx-stroke-width: 0;");  
+                                        }
+                                    }                                       
                                     
                                     break;
                             }                           
                         }
-                    });                   
+                    );                   
                     
                     Label label = new Label(item);
                     

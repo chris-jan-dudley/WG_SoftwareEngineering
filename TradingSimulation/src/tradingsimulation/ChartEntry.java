@@ -24,7 +24,7 @@ public class ChartEntry {
         return object;
     }
     
-    public XYChart.Series getSeries () {
+    public XYChart.Series<Number,Number> getSeries () {
         return series;
     }
     

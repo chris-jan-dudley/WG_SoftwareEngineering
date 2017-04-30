@@ -18,7 +18,6 @@ private int currentTick;
 private Date startDate;
 private Date endDate;
 private int tickRate;
-private ViewController view;
 
 public Market(String name) {
 this.name = name;

@@ -1,6 +1,8 @@
 package tradingsimulation;
 
 import java.time.LocalDate;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -23,7 +25,21 @@ public class SettingsViewer {
         this.controller = controller;
         
         startDate.setMaxWidth(110);
+        startDate.valueProperty().addListener((ov, oldValue, newValue) -> {            
+            if (newValue.compareTo(endDate.getValue()) > 0) {
+                startDate.setValue(endDate.getValue());
+            } 
+            controller.getChart().updateDateBounds();
+        });  
+        
         endDate.setMaxWidth(110);
+        endDate.valueProperty().addListener((ov, oldValue, newValue) -> {            
+            if (newValue.compareTo(startDate.getValue()) < 0) {
+                endDate.setValue(startDate.getValue());
+            }  
+            controller.getChart().updateDateBounds();
+        });
+        
         
         HBox startWrapper = new HBox(7);
         startWrapper.getChildren().addAll(
@@ -39,11 +55,30 @@ public class SettingsViewer {
         
         Slider speed = new Slider();
         speed.setMaxWidth(120);
-       
+        speed.setMin(0);
+        speed.setValue(1);
+        speed.setMax(100);        
+        speed.setShowTickMarks(true);
+        speed.setShowTickLabels(true);
+        
+        Button playPauseBut = new Button("▶");
+        playPauseBut.setOnAction(e -> {
+                if (playPauseBut.getText().equals("▶")) {
+                    playPauseBut.setText("||");
+                } else {
+                    playPauseBut.setText("▶");
+                }  
+        });
+        
+        Button stopBut = new Button("■");
+        stopBut.setOnAction(e -> 
+                controller.reset()
+        );
+        
         HBox controls = new HBox(7);
         controls.getChildren().addAll(
-                new Button("▶"),
-                new Button("■"),
+                playPauseBut,
+                stopBut,
                 speed
         );
         
@@ -53,12 +88,8 @@ public class SettingsViewer {
                 controls
         );
                 
-        container.setMinWidth(200);
-        container.setMaxWidth(200);
-        
-        container.setMinHeight(150);
-        container.setMaxHeight(150);
-        
+        container.setMinWidth(200);      
+        container.setMinHeight(150);       
         container.setPadding(new Insets(10, 7, 10, 7));
                
     }
