@@ -190,11 +190,15 @@ private ArrayList<TradeHappening> thisTickTrades;
         try {
             String line32 = Files.readAllLines(Paths.get(csvStockDataFN)).get(32);
             } catch (IOException e) {
-                throw new FileNotFoundException();
+                view.reportBadFile("Stock Init Data was not valid for file reading");
            
             }
         }
+
+    Iterable<Company> getCompanies() {
+        return this.companies;
     }
+
 
     /**
      * Access this Stock Exchanges mem objects for the rows specified.
@@ -203,10 +207,12 @@ private ArrayList<TradeHappening> thisTickTrades;
      * @return 
      */
     @Override
-    public HashMap<Integer, HashMap<String, Integer>> getGraphDataOverTime(int fromTick, int toTick) {
-        throw new UnsupportedOperationException("Need some sort of way to transmit data to GUI from this function -"
-                + "does the Hashmap<int tickIndex, Hashmap<String goodName, int itemValue>> output work for GUI?");
-        
+    public ArrayList<TickRow> getGraphDataOverTime(int fromTick, int toTick) {
+        ArrayList<TickRow> memoryRows = new ArrayList<TickRow>();
+        for (int i = fromTick; i < toTick; i++) {
+            memoryRows.add(mem.getTickRow(i));
+        }
+        return memoryRows;
     }
     // to return: Hashmap<int tickIndex, Hashmap<String goodName, int itemValue>>
     
