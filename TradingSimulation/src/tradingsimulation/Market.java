@@ -5,6 +5,7 @@
  */
 package tradingsimulation;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -34,8 +35,8 @@ abstract void tick();
 
 
 
-
-    abstract HashMap<Integer, HashMap<String, Integer>> getGraphDataOverTime(int fromTick, int toTick);
+    // old return was: HashMap<Integer, HashMap<String, Integer>>
+    abstract ArrayList<TickRow> getGraphDataOverTime(int fromTick, int toTick);
 
     public String getName() {
         return name;

@@ -1,0 +1,43 @@
+Software Engineering coursework,,,,,,,,,,,,,,,,,,
+Data for the initialisation of the stock market simulation,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+The closing price shown is the price that the company ,,,,,,,,,,,,,,,,,,
+will start trading at at opening of business 1 January 2017,,,,,,,,,,,,,,,,,,
+Figures in the main section show the number of shares,,,,,,,,,,,,,,,,,,
+owned by each client,,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+,,,,,,,Norbert DaVinci,Ellen Fotheringay-Smythe,Donald Shrek,Sir Melvin Codd,A&G investments,Trinity Investments,Ivor Lott,Justine Thyme,Saeed Pune,Xi Xian,,Total shares issued
+Company,,Type,Closing price 31 Dececmber 2016,,,,,,,,,,,,,,,
+,,,Pence,,,,,,,,,,,,,,,
+Pear Computing,,Hitech,650,,,,1505,1672,9746,330,4077,8054,7841,6187,2304,8284,,50000
+Wong Holdings,,Property,126,,,,0,0,8107,1893,0,0,0,0,0,0,,10000
+Williams Leisure,,Hard,82,,,,1456,4816,0,0,0,0,6380,0,0,7348,,20000
+The Lovely Pie Co,,Food,24,,,,0,0,0,0,0,0,0,0,0,6000,,6000
+Q1Q Tech,,Hitech,130,,,,8464,701,8917,7714,4707,3238,3701,3276,2447,5735,,48900
+Texas Crisps,,Food,180,,,,4336,9571,0,0,0,8593,0,0,1611,8789,,32900
+Swann Holdings,,Property,45,,,,6424,498,8152,8526,0,0,0,0,0,0,,23600
+Patels Sauces,,Food,100,,,,6479,6345,8437,1385,4272,9841,2774,1833,4188,9446,,55000
+Gardens 'R' Us,,Hard,19,,,,0,0,0,1319,8119,0,0,8644,1206,0,,19288
+Sussex Flats,,Property,570,,,,4827,0,0,0,0,3073,1354,180,6464,7102,,23000
+Dawn Technology,,Hitech,12,,,,0,0,6957,0,0,8438,0,1563,0,1042,,18000
+Excelsior Foods,,Food,540,,,,4551,2538,5059,636,4535,5244,9874,5309,6772,5482,,50000
+Supreme Sk8,,Hard,345,,,,0,0,0,0,0,0,9837,4283,6332,4548,,25000
+Luxury Caravans,,Property,268,,,,7774,9872,6348,842,5757,1828,0,0,9579,0,,42000
+WyreCraft,,Hitech,637,,,,109,0,3987,9042,9088,337,452,5229,8315,5441,,42000
+Upduff and Co,,Food,340,,,,4656,3907,0,0,0,0,8371,7946,4216,7604,,36700
+Downe and Co,,Hard,99,,,,5344,0,7542,0,0,5857,4400,8235,8622,0,,40000
+Skinners,,Property,368,,,,5576,7793,9015,4514,1307,7529,4553,2337,6728,7648,,57000
+WazooIt,,Hitech,45,,,,3181,0,0,6619,0,0,0,0,0,0,,9800
+Whizzer and Chipps,,Food,210,,,,9496,5022,0,0,0,0,0,0,8969,7513,,31000
+,,,,,,,,,,,,,,,,,,
+CASH HOLDING (Pounds),,,,,,,100000,100000,100000,100000,100000,50000,50000,50000,50000,50000,,
+,,,,,,,,,,,,,,,,,,
+Total client worth (nearest £),,,,,,,275786,232196,308466,202909,241052,219266,261210,219686,315835,334368,,
+,,,,,,,,,,,,,,,,,,
+W&G's appointed trader will be responsible for managing the wealth of Norbert DaVinci and Justine Thyme.,,,,,,,,,,,,,,,,,,
+The random traders will be responsible for managing the wealth of all other clients.,,,,,,,,,,,,,,,,,,
+"Each random trader must have at least one client, but other than that, the assignment is up to you.",,,,,,,,,,,,,,,,,,
+"At this time, we do not know what the client preference for risk is.",,,,,,,,,,,,,,,,,,
+,,,,,,,,,,,,,,,,,,
+See a problem with this spreadsheet?,,,,,,,,,,,,,,,,,,
+Email: khs20@sussex.ac.uk,,,,,,,,,,,,,,,,,,

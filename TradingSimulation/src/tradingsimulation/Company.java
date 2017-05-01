@@ -14,6 +14,7 @@ public abstract class Company {
     private int sharePrice;
     
     protected RiskLevels riskFactor;
+    double getSharePrice;
     
     public enum RiskLevels {
         High, Medium, Low

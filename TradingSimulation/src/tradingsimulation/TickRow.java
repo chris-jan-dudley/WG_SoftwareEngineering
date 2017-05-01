@@ -20,6 +20,14 @@ public class TickRow {
     public ArrayList<Company> getCompanyPrices() {
         return this.companyClonesAtTick;
     }
+    
+    public int getExchangeIndex() {
+        int total = 0;
+        for (Company c : companyClonesAtTick) {
+            total = total+ c.getSharePrice();
+        }
+        return total;
+    }
 
     public void addOccuredTrades() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

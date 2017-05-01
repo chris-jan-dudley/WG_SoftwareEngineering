@@ -14,6 +14,7 @@ import java.util.Map;
  * @author Conor
  */
 
+
 public abstract class Trader {
     
     
