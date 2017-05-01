@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.List;
+import java.util.Random;
 
 /**
  *
@@ -90,11 +91,20 @@ private ArrayList<TradeHappening> thisTickTrades;
     /**
      * The vital method to the class, this
      * 1. calls the price change formulas, "slightlyVariatePrices();"
-     * 2. calls .trade() on all traders to allow to place sell/buy offers,
-     * 3. checks for occuring external events and incorporates that,
-     * 4. runs the sell/buy offers and
-     *          4.1 sets the shares owned to the right places,
-     *          4.2 sets the cash to the right values
+     * 2. checks for occuring external events and incorporates that,
+     * 3. loop through supply and demand
+     *          3.1 calls .getClient() on all portfolios, .getTrader() from that,
+     *          3.2 for each portfolios trader, call .tradeBuy() to collect the requested purchases for that portfolio, .tradeSell() for the respective requested sells.
+     *          3.3 arrange supply and demand such that it is easily separated into Requests for buying and Requests for selling per Company
+     *          
+     * 4. (part of 3 ..) actually execute trades on objects, by looping through each Company:
+     *          4.1 grab requests for each Company, sum totalDesiredBuy, totalDesiredSell
+     *          4.2 if statement that both those totals are > 0
+     *              4.25 if so, take min() of the totals.
+     *              4.26 proportionately assign "AmountCan" to each request according to that min proportioned to the totalDesiredBuy and totalDesiredSell (one side, sell or buy, should always have 100%
+     *              "fufilled".
+     *          4.3 sets the shares owned to the right places,
+     *          4.4 sets the cash to the right values
      * 5. adapts random traders to balanced/aggressive/seller based on probability(.recalculateStrategy());
      * 6. store records of the current object sets, share prices, clients, etc, in the memory.
      * 7. notify the GUI that the execution has occured so it can update on the screen
@@ -246,31 +256,37 @@ private ArrayList<TradeHappening> thisTickTrades;
     
     private void slightlyVariatePrices() {
         // awaiting others to commit so can access price and modify it, psuedo code below:
-        /*
+        Random rng = new Random();
         for (Company c : companies) {
-        c.setSharePrice(min(1, c.getSharePrice*(rand(0.98 to 1.02));
+        c.setSharePrice((int) Math.min(1, (c.getSharePrice* ((0.5 - rng.nextFloat()) / 50))));
         }
-        */
+        
     }
     
     private void applyExternalEvents(ArrayList<ExternalEvent> EVs) {
         for (ExternalEvent event : EVs) {
-            if (event.getClass() == "AnyExtEvt") {
+            if (event instanceof AnyExtEvt) {
                 // iterate through companies .. randomly adding buy/sell orders of various companies..
             }
-            else if (event.getClass() == "CategoryExtEvent") {
+            else if (event instanceof CategoryExtEvt) {
                 /* iterate only through companies of that category
                 eventsCategory = event.getCategory
                         .. if company.getCategory = eventsCategory 
                                 .. add to some orders..
             */
             }
-            else if (event.getClass() == "CompanyExtEvent") {
+            else if (event instanceof CompanyExtEv) {
                 // randomly add buy/sell orders to this company..
             }
         }
     }
     
+    
+    /** 1. Generate  list of supply and demand per Portfolio
+     * 2. Arrange (into companies -- demand/supply) into form where we can work out possible trades
+     * 3. execute proportionately
+     * 4. thats it
+     */
     private void executeTrades() {
         ArrayList<TradeHappening> trades = this.thisTickTrades;
         
