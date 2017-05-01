@@ -35,6 +35,8 @@ private ArrayList<ExternalEvent> externalEvents;
 private HashMap<Integer, ArrayList<ExternalEvent>> externalEventsIndexedToTicks;
 private ArrayList<Trader> traders;
 private ArrayList<Company> companies;
+private ArrayList<Client> clients;
+private ArrayList<Portfolio> portfolios;
 private View view; // 
 private ArrayList<TradeHappening> thisTickTrades;
 
@@ -117,16 +119,13 @@ private ArrayList<TradeHappening> thisTickTrades;
        // 1 randomly variate prices before traders can request...
        slightlyVariatePrices();
        
-       // 2 collate trader requests..
-       for (Trader t : traders) {
-           t.trade(); // obviously random trader does this based on probability, intelligent trader has access to this object to make it's decisions.
-       }
+     
        
-       // 3 apply events
+       // 2 apply events
        ArrayList<ExternalEvent> eventsThisTick = this.externalEventsIndexedToTicks.get(this.currentTick);
        applyExternalEvents(eventsThisTick);
        
-       // 4 Execute current offers, update objects.
+       // 3 & 4 Loop through supply and demand, then Execute current offers, update objects.
        // Requires other implementation first.
        executeTrades();
        
@@ -287,8 +286,47 @@ private ArrayList<TradeHappening> thisTickTrades;
      * 3. execute proportionately
      * 4. thats it
      */
+    
+    /*
+    
+    3. loop through supply and demand
+     *          3.1 calls .getTrader() from that,
+     *          3.2 for each portfolios trader, call .tradeBuy() to collect the requested purchases for that portfolio, .tradeSell() for the respective requested sells.
+     *          3.3 arrange supply and demand such that it is easily separated into Requests for buying and Requests for selling per Company
+    
+    * 4. (part of 3 ..) actually execute trades on objects, by looping through each Company:
+     *          4.1 grab requests for each Company, sum totalDesiredBuy, totalDesiredSell
+     *          4.2 if statement that both those totals are > 0
+     *              4.25 if so, take min() of the totals.
+     *              4.26 proportionately assign "AmountCan" to each request according to that min proportioned to the totalDesiredBuy and totalDesiredSell (one side, sell or buy, should always have 100%
+     *              "fufilled".
+     *          4.3 sets the shares owned to the right places,
+     *          4.4 sets the cash to the right values
+    */
+    
+    
+    
+    
     private void executeTrades() {
         ArrayList<TradeHappening> trades = this.thisTickTrades;
+        
+        // TO CHANGE: below
+        // .trade(Buy|Sell)  are implemented as per-Trader --> per Traders Clients --> per Portfolio in randomTrader
+        // so instead of iterating through portfolio, iterate through traders out (it does make more sense...)
+        for (Portfolio p : portfolios) {
+            Trader psTrader = p.getTrader();
+            ArrayList<Request> wantToBuy = psTrader.tradeBuy();
+            ArrayList<Request> wantToSell = psTrader.tradeSell();
+            // each Request represents one clients singular portfolio.
+            // each request has a map of what that portfolio should aim to buy or sell.
+            for (Request portfolioInstance : wantToBuy) {
+                HashMap < Company, Integer > buyMap = portfolioInstance.getMap();
+                
+            }
+            
+        }
+        
+        
         
         // Collect and store supply and demand for each Company
         ArrayList<CompanyTradeInfo> tInfo= new ArrayList<CompanyTradeInfo>();
