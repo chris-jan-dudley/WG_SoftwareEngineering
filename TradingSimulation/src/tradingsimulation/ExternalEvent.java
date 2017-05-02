@@ -10,6 +10,7 @@ import java.util.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -25,8 +26,8 @@ abstract public class ExternalEvent {
     int fromTick, toTick, numDays;
 
     public ExternalEvent(ArrayList<String> eventsFile) {
-        DateFormat df = new SimpleDateFormat("hh:mm");
-        DateFormat tf = new SimpleDateFormat("DD/mm/yyyy");
+        DateFormat df = new SimpleDateFormat("DD/mm/yyyy");
+        DateFormat tf = new SimpleDateFormat("hh:mm");
 
         try {
             date = df.parse(eventsFile.get(0));
@@ -53,12 +54,43 @@ abstract public class ExternalEvent {
         return action;
     }
 
-    public int getFromTick() {
-        return fromTick;
+    public int getFromTick() throws ParseException {
+        DateFormat df = new SimpleDateFormat("hh:mm");
+        Date startDate = df.parse("01/01/2017");
+        Date eventDate = date;
+        Calendar startCal = Calendar.getInstance();
+        Calendar eventCal = Calendar.getInstance();
+        startCal.setTime(startDate);
+        eventCal.setTime(eventDate);
+
+        int numberOfDays = 1;   //Include start day
+        while (startCal.before(eventCal)) {
+            if ((Calendar.SATURDAY != startCal.get(Calendar.DAY_OF_WEEK))
+                    && (Calendar.SUNDAY != startCal.get(Calendar.DAY_OF_WEEK))) {
+                numberOfDays++;
+            }
+            startCal.add(Calendar.DATE, 1);
+        }
+        DateFormat tf = new SimpleDateFormat("hh:mm");
+        Date startDayTime = tf.parse("09:00");
+        Date startEventTime = time;
+        long difference = startEventTime.getTime() - startDayTime.getTime();
+        long diffMinutes = difference / (60 * 1000) % 60;
+        long diffHours = difference / (60 * 60 * 1000) % 24;
+        int numberOfTicks = (int) ((numberOfDays * 28) + (diffHours * 4) + (diffMinutes / 15));
+        return numberOfTicks;
     }
 
-    public boolean getIsBuys() {
-        return isBuy;
+    public Date getTime() {
+        return time;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public int getToTick() {
+        return 1;
     }
 
     int getToTick() {
