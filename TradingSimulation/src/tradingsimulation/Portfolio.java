@@ -24,8 +24,8 @@ import java.util.Map;
  */
 public class Portfolio {
     
-    Client ownedBy;
-    Trader managedBy;
+    private Client ownedBy;
+    private Trader managedBy;
     int cashValue = 0;
     Map<Company, Integer> ownedShares;
     int riskValue;
@@ -34,6 +34,14 @@ public class Portfolio {
         ownedBy = client;
         managedBy = trader;
         ownedShares = new HashMap<>();
+    }
+    
+    public Client getClient() {
+        return this.ownedBy;
+    }
+    
+    public Trader getTrader() {
+        return this.managedBy;
     }
     
     public boolean addShares(Company company, int number){
