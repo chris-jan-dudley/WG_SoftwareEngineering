@@ -5,10 +5,11 @@
  */
 
 import java.io.FileNotFoundException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import static jdk.nashorn.internal.objects.NativeRegExp.test;
 import org.junit.After;
+import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
 import tradingsimulation.AnyExtEvt;
@@ -29,7 +30,7 @@ public class EventReadingTests {
 
     @Before
     public void setUp() {
-        ArrayList<String> initEvent = new ArrayList<>(Arrays.asList("Feb 8 2017", "09:00", "Q1Q tech announce exciting developments in their smartphone range, anticipating a new model in June 2017", "Random traders buy Q1Q stock over 2 days"));
+        ArrayList<String> initEvent = new ArrayList<>(Arrays.asList("Jan 2 2017", "09:00", "Q1Q tech announce exciting developments in their smartphone range, anticipating a new model in June 2017", "Random traders buy Q1Q stock over 2 days"));
         testSE = new StockExchange("Test Stock Exchange");
         testEE = new AnyExtEvt(initEvent);
 
@@ -40,10 +41,8 @@ public class EventReadingTests {
     }
 
     @Test
-    public void hello() throws FileNotFoundException {
-        System.out.println(testEE.getAction());
-        System.out.println(testEE.getFromTick());
-        System.out.println(testEE.getNature());
-        System.out.println(testEE.getIsBuys());
+    public void hello() throws FileNotFoundException, ParseException {
+        assertTrue((testEE.getAction()).equals("Random traders buy Q1Q stock over 2 days"));
+        assertTrue(testEE.getFromTick() == 28);
     }
 }

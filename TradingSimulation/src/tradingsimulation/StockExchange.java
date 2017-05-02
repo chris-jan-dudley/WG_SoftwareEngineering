@@ -26,6 +26,7 @@ import java.util.Random;
  */
 public class StockExchange extends Market {
 
+
 private int currentTick;
 private int endTick;
 private Date startDate;
@@ -41,9 +42,9 @@ private View view; //
 private ArrayList<TradeHappening> thisTickTrades;
 
     /**
-     * Just like with Market/TradingExchange, this is provided for testing, not intended for production use
-     * (You should always use constructors with init data rather then manually access methods to add CSV data)
-     * 
+     * Just like with Market/TradingExchange, this is provided for testing, not intended for production use (You should
+     * always use constructors with init data rather then manually access methods to add CSV data)
+     *
      * @param marketName - identify the name to use for this market for references.
      */
     public StockExchange(String marketName) {
@@ -51,8 +52,9 @@ private ArrayList<TradeHappening> thisTickTrades;
     }
 
     /**
-     * Creates an instance of a stock exchange, following TradingSimulations config 1, and so expecting csv file names for
-     * stock init data and external events
+     * Creates an instance of a stock exchange, following TradingSimulations config 1, and so expecting csv file names
+     * for stock init data and external events
+     *
      * @param marketName - used for referencing.
      * @param csvStockDataFileName - valid filename expected of form ala. coursework spec.
      * @param csvExternalEventsFileName - valid filename expected of form ala. coursework spec.
@@ -61,7 +63,7 @@ private ArrayList<TradeHappening> thisTickTrades;
         super(marketName);
         if (!this.constructFromCSV(csvStockDataFileName, csvExternalEventsFileName)) {
             // throw error to GUI
-             throw new UnsupportedOperationException("Attach method to tell user CSV was not able to loaded, through GUI.");
+            throw new UnsupportedOperationException("Attach method to tell user CSV was not able to loaded, through GUI.");
         }
         // calculate end tick from start/end date.
         this.calculateEndTick();
@@ -69,12 +71,13 @@ private ArrayList<TradeHappening> thisTickTrades;
         this.externalEventsIndexedToTicks = calculateEventsIndexs();
         // initialise memory
         this.mem = new StockExchangeData();
-        
+
         this.view.readyGUI();
     }
-    
+
     /**
      * A wrapper function to deal with all the CSV parsing functions
+     *
      * @param csvStockDataFN
      * @param csvExternalEventsFN
      * @return false if unable to parse data/file/invalid filename, true if successfully parsed.
@@ -91,6 +94,7 @@ private ArrayList<TradeHappening> thisTickTrades;
     }
 
     /**
+
      * The vital method to the class, this
      * 1. calls the price change formulas, "slightlyVariatePrices();"
      * 2. checks for occuring external events and incorporates that,
@@ -164,8 +168,9 @@ private ArrayList<TradeHappening> thisTickTrades;
        //7 notify GUI
        view.update();
                
+
     }
-    
+
     // note: kept public for individually testing CSV loading the events file only
     public boolean parseExternalEventCSV(String fileName) throws FileNotFoundException {
         // 1st, creates a CSV parser with the configs
@@ -193,6 +198,7 @@ private ArrayList<TradeHappening> thisTickTrades;
         }
 
     }
+
     // note: kept public for individually testing CSV loading for init data only.
     public void parseStockDataCSV(String csvStockDataFN) {
         
@@ -211,9 +217,10 @@ private ArrayList<TradeHappening> thisTickTrades;
 
     /**
      * Access this Stock Exchanges mem objects for the rows specified.
+     *
      * @param fromTick
      * @param toTick
-     * @return 
+     * @return
      */
     @Override
     public ArrayList<TickRow> getGraphDataOverTime(int fromTick, int toTick) {
@@ -339,6 +346,80 @@ private ArrayList<TradeHappening> thisTickTrades;
             for (Pair<Company, int> requestedPurchase : wantToBuy) {
                 // add to relevant CompanyTradeInfo
                 
+            }
+        }
+    }
+
+    private void addExternalEvent(ExternalEvent e) {
+        this.externalEvents.add(e);
+    }
+
+    private HashMap<Integer, ArrayList<ExternalEvent>> calculateEventsIndexs() {
+        // for each tick the simulation runs
+        HashMap<Integer, ArrayList<ExternalEvent>> evIndex = new HashMap<Integer, ArrayList<ExternalEvent>>();
+        for (int i = 0; i < this.endTick; i++) {
+            ArrayList<ExternalEvent> val = evIndex.get(i);
+            // check active external events at that tick and put it in that ticks hashmap
+            for (ExternalEvent event : externalEvents) {
+                int fromTick = event.getFromTick();
+                int toTick = event.getToTick();
+                if (i >= fromTick && i <= toTick) {
+                    val.add(event);
+                    // it is within the period, so append it to the hashmap for this, ith, tick.
+                }
+            }
+            evIndex.put(i, val);
+        }
+        return evIndex;
+    }
+
+    private void calculateEndTick() {
+        this.endTick = 100;
+    }
+
+    private void slightlyVariatePrices() {
+        // awaiting others to commit so can access price and modify it, psuedo code below:
+        Random rng = new Random();
+        for (Company c : companies) {
+            c.setSharePrice((int) Math.min(1, (c.getSharePrice * ((0.5 - rng.nextFloat()) / 50))));
+        }
+
+    }
+
+    private void applyExternalEvents(ArrayList<ExternalEvent> EVs) {
+        for (ExternalEvent event : EVs) {
+            if (event instanceof AnyExtEvt) {
+                // iterate through companies .. randomly adding buy/sell orders of various companies..
+            } else if (event instanceof CategoryExtEvt) {
+                /* iterate only through companies of that category
+                eventsCategory = event.getCategory
+                        .. if company.getCategory = eventsCategory 
+                                .. add to some orders..
+                 */
+            } else if (event instanceof CompanyExtEv) {
+                // randomly add buy/sell orders to this company..
+            }
+        }
+    }
+
+    /**
+     * 1. Generate list of supply and demand per Portfolio 2. Arrange (into companies -- demand/supply) into form where
+     * we can work out possible trades 3. execute proportionately 4. thats it
+     */
+    private void executeTrades() {
+        ArrayList<TradeHappening> trades = this.thisTickTrades;
+
+        // Collect and store supply and demand for each Company
+        ArrayList<CompanyTradeInfo> tInfo = new ArrayList<CompanyTradeInfo>();
+        for (Company c : companies) {
+            tInfo.add(new CompanyTradeInfo(c));
+        }
+
+        for (Trader t : traders) {
+            ArrayList<Pair<Company, int>> wantToBuy = t.getWantToBuy();
+            for (Pair<Company, int> requestedPurchase : wantToBuy) {
+                // add to relevant CompanyTradeInfo
+
             }
         }
     }
