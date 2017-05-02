@@ -23,6 +23,18 @@ import java.util.Map;
  * @author Conor
  */
 public class Portfolio {
+
+    void setRisk(int risk) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    int getRisk() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    int calculateNetWorth() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
     Client ownedBy;
     Trader managedBy;

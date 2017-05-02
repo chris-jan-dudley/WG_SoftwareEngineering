@@ -38,6 +38,7 @@ public class StockExchange extends Market {
     private View view; // 
     private ArrayList<TradeHappening> thisTickTrades;
 
+
     /**
      * Just like with Market/TradingExchange, this is provided for testing, not intended for production use (You should
      * always use constructors with init data rather then manually access methods to add CSV data)
@@ -154,11 +155,11 @@ public class StockExchange extends Market {
         thisTickMemory.addEventChanges();
         // put the events that began and ended as a Strings under Events
         thisTickMemory.commitRow();
-        // lock the row for editing
-
-        //7 notify GUI
-        view.update();
-
+        // lock the row for editing              
+    }
+    
+    public int getTick() {
+        return currentTick;
     }
 
     // note: kept public for individually testing CSV loading the events file only
