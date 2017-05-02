@@ -10,31 +10,36 @@ package tradingsimulation;
  * @author sjb56
  */
 public abstract class Company {
+    private String name;
     private int numberOfShares;  
-    private int sharePrice;
+    private double sharePrice;
     
     protected RiskLevels riskFactor;
-    double getSharePrice;
     
     public enum RiskLevels {
         High, Medium, Low
     }
     
-    public Company (int startingShares, int startingPrice) {
+    public Company (String name, int startingShares, double startingPrice) {
+        this.name = name;
         numberOfShares = startingShares;
         sharePrice = startingPrice;
     }   
     
-    public boolean setSharePrice (int newPrice) {
+    public String getName () {
+        return name;
+    }    
+    
+    public boolean setSharePrice (double newPrice) {
         if (newPrice >= 0) {
             sharePrice = newPrice;
             return true;
         } else {
-           return false; 
+            return false; 
         }
     }
     
-    public int getSharePrice () {
+    public double getSharePrice () {
         return sharePrice;
     }
     
