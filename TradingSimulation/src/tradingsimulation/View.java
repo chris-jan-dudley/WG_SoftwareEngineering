@@ -5,26 +5,21 @@
  */
 package tradingsimulation;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author sjb56
  */
-public class IntelligentTrader extends Trader {
+class View {
 
-    @Override
-    ArrayList<Request> tradeBuy() {
+    void readyGUI() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    ArrayList<Request> tradeSell() {
+    void update() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    @Override
-    void recalculateStrategy() {
+    void reportBadFile(String stock_Init_Data_was_not_valid_for_file_re) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
