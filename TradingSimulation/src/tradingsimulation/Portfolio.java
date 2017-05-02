@@ -26,7 +26,35 @@ public class Portfolio {
     
     Client ownedBy;
     Trader managedBy;
+
+    public Client getOwnedBy() {
+        return ownedBy;
+    }
+
+    public void setOwnedBy(Client ownedBy) {
+        this.ownedBy = ownedBy;
+    }
+
+    public Trader getManagedBy() {
+        return managedBy;
+    }
+
+    public void setManagedBy(Trader managedBy) {
+        this.managedBy = managedBy;
+    }
+
+    public Map<Company, Integer> getOwnedShares() {
+        return ownedShares;
+    }
+
+    public void setOwnedShares(Map<Company, Integer> ownedShares) {
+        this.ownedShares = ownedShares;
+    }
     int cashValue = 0;
+
+    public void setCashValue(int cashValue) {
+        this.cashValue = cashValue;
+    }
     Map<Company, Integer> ownedShares;
     int riskValue;
     
@@ -107,5 +135,13 @@ public class Portfolio {
         return false;
     }
     
+    @Override
+    public Portfolio clone(){
+        Portfolio clonePortfolio = new Portfolio(this.getOwnedBy(), this.getManagedBy());
+        clonePortfolio.setCashValue(this.getCurrentCash());
+        clonePortfolio.setOwnedShares(this.getOwnedShares());
+        clonePortfolio.setRisk(this.getRisk());
+        return clonePortfolio; 
+    }
     
 }

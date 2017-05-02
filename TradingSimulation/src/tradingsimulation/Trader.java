@@ -18,6 +18,38 @@ public abstract class Trader {
     
     
     ArrayList<Client> clients;
+
+    public ArrayList<Client> getClients() {
+        return clients;
+    }
+
+    public void setClients(ArrayList<Client> clients) {
+        this.clients = clients;
+    }
+
+    public ArrayList<Request> getBuyRequests() {
+        return buyRequests;
+    }
+
+    public void setBuyRequests(ArrayList<Request> buyRequests) {
+        this.buyRequests = buyRequests;
+    }
+
+    public ArrayList<Request> getSellRequests() {
+        return sellRequests;
+    }
+
+    public void setSellRequests(ArrayList<Request> sellRequests) {
+        this.sellRequests = sellRequests;
+    }
+
+    public StockExchange getStockE() {
+        return stockE;
+    }
+
+    public void setStockE(StockExchange stockE) {
+        this.stockE = stockE;
+    }
     ArrayList<Request> buyRequests;
     ArrayList<Request> sellRequests;
     StockExchange stockE;
@@ -44,12 +76,14 @@ public abstract class Trader {
     
     //for clearing request lists between ticks
     void clear(){
-        buyRequests = new ArrayList<>();
-        sellRequests = new ArrayList<>();
+        buyRequests.clear();
+        sellRequests.clear();
     }
 
     abstract ArrayList<Request> tradeBuy();
     abstract ArrayList<Request> tradeSell();
+    @Override
+    protected abstract Trader clone();
     
     abstract void recalculateStrategy();
     

@@ -18,6 +18,14 @@ public class RandomTrader extends Trader {
 
     public mode tradeMode;
 
+    public mode getTradeMode() {
+        return tradeMode;
+    }
+
+    public void setTradeMode(mode tradeMode) {
+        this.tradeMode = tradeMode;
+    }
+
     public RandomTrader(ArrayList < Client > clients, StockExchange stockE) {
         super(clients, stockE);
         tradeMode = mode.BALANCED;
@@ -196,5 +204,15 @@ public class RandomTrader extends Trader {
                     tradeMode = mode.SELLER;
                 }
         }
+    }
+    
+    
+    @Override
+    protected Trader clone(){
+        RandomTrader cloneRandom = new RandomTrader(super.getClients(), super.getStockE());
+        cloneRandom.setBuyRequests(super.getBuyRequests());
+        cloneRandom.setSellRequests(super.getSellRequests());
+        cloneRandom.setTradeMode(tradeMode);
+        return cloneRandom;
     }
 }
