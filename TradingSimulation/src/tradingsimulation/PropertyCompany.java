@@ -11,14 +11,14 @@ package tradingsimulation;
  */
 public class PropertyCompany extends Company {
     
-    public PropertyCompany (int startingShares, int startingPrice) {
-        super (startingShares, startingPrice);
+    public PropertyCompany (String companyName, int startingShares, double startingPrice) {
+        super (companyName, startingShares, startingPrice);
         riskFactor = RiskLevels.Low;
     }
     
     @Override
     public Company clone() {
-        PropertyCompany comp = new PropertyCompany(super.getNumberOfShares(), super.getSharePrice()); 
+        PropertyCompany comp = new PropertyCompany(super.getName(), super.getNumberOfShares(), super.getSharePrice());
         comp.setRisk(getRiskFactor());
         return comp;
     }
